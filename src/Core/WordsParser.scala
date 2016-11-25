@@ -9,6 +9,7 @@ import Nlp.NounsExtractor
   *
   */
 
+
 class WordsParser(input : String){
 
   def getSentenceTokens : Array[String] ={
@@ -37,6 +38,7 @@ class WordsParser(input : String){
   }
 }
 
+/*
 object ShopAssistant {
   def main(args: Array[String]) = {
     val input = scala.io.StdIn.readLine("What do you want to buy?")
@@ -58,3 +60,4 @@ object ShopAssistant {
     }
   }
 }
+*/
