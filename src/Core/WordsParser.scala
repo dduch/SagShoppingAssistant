@@ -45,17 +45,16 @@ object ShopAssistant {
     val names : Array[String] = new NamesExtractor(tokenized).extractNames
 
     tokenized.foreach(x => System.out.println(x))
-    names.foreach(x => System.out.println(x))*/
+    names.foreach(x => System.out.println(x))
 
     val nouns : List[String] = new NounsExtractor(input).extractNouns()
-    nouns.foreach(x => System.out.println(x))
+    nouns.foreach(x => System.out.println(x)) */
 
     try {
       val content = new WebDownloader().get("https://www.amazon.com/")
       System.out.println(content)
     } catch {
-      case ioe: java.io.IOException =>  // handle this
-      case ste: java.net.SocketTimeoutException => // handle this
+      case e: Exception => e.printStackTrace
     }
   }
 }
