@@ -16,7 +16,7 @@ class WebDownloader {
     connection.setReadTimeout(readTimeout)
     connection.setRequestMethod(requestMethod)
     val inputStream = connection.getInputStream
-    val content = io.Source.fromInputStream(inputStream).mkString
+    val content  = 5 /*= io.Source.fromInputStream(inputStream).mkString*/
     if (inputStream != null) inputStream.close
     content
   }
