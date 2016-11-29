@@ -1,13 +1,14 @@
 package Nlp
 
 import java.io.{FileInputStream, InputStream}
-
 import opennlp.tools.cmdline.parser.ParserTool
 import opennlp.tools.parser.{Parse, Parser, ParserFactory, ParserModel}
 
 /**
   * Created by Dawid Dominiak on 2016-11-05.
   */
+
+// Klasa służąca do ekstrakcji nazwy przedmiotu, który chcemy kupić ze zdania w języku naturalnym
 class NounsExtractor(sentence : String) {
   var nounPhrases  = List[String]()
 
@@ -33,4 +34,5 @@ class NounsExtractor(sentence : String) {
     }
     p.getChildren().foreach((child : Parse) => getNounPhrases(child))
   }
+
 }
