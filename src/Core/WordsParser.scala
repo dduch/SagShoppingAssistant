@@ -2,7 +2,7 @@ import java.io.{FileInputStream, IOException, InputStream}
 
 import Core.WebDownloader
 import opennlp.tools.tokenize.{Tokenizer, TokenizerME, TokenizerModel}
-import Nlp.NounsExtractor
+import Nlp.{NamesExtractor, NounsExtractor}
 
 /**
   * Created by Dawid Dominiak on 2016-11-05.
@@ -38,19 +38,19 @@ class WordsParser(input : String){
   }
 }
 
-/*
+
 object ShopAssistant {
   def main(args: Array[String]) = {
-    val input = scala.io.StdIn.readLine("What do you want to buy?")
+    val input = scala.io.StdIn.readLine("What do you want to buy, Sir?\n")
 
-    /*val tokenized : Array[String] = new WordsParser(input).getSentenceTokens
+    val tokenized : Array[String] = new WordsParser(input).getSentenceTokens
     val names : Array[String] = new NamesExtractor(tokenized).extractNames
 
-    tokenized.foreach(x => System.out.println(x))
-    names.foreach(x => System.out.println(x))
+    //tokenized.foreach(x => System.out.println(x))
+    //names.foreach(x => System.out.println(x))
 
     val nouns : List[String] = new NounsExtractor(input).extractNouns()
-    nouns.foreach(x => System.out.println(x)) */
+    nouns.foreach(x => System.out.println(x))
 
     try {
       val content = new WebDownloader().get("https://www.amazon.com/")
@@ -60,4 +60,3 @@ object ShopAssistant {
     }
   }
 }
-*/

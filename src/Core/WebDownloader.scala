@@ -7,8 +7,8 @@ import java.net.{URL, HttpURLConnection}
   */
 class WebDownloader {
   def get(url: String,
-          connectTimeout: Int = 5000,
-          readTimeout: Int = 5000,
+          connectTimeout: Int = 25000,
+          readTimeout: Int = 25000,
           requestMethod: String = "GET") =
   {
     val connection = (new URL(url)).openConnection.asInstanceOf[HttpURLConnection]

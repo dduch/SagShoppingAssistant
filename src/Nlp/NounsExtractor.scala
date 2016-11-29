@@ -28,7 +28,7 @@ class NounsExtractor(sentence : String) {
   }
 
   def getNounPhrases(p : Parse ) {
-    if (p.getType().equals("NP")){
+    if (p.getType == "NN" || p.getType == "NNS" || p.getType == "NNP" || p.getType == "NNPS"){
       nounPhrases ::= p.getCoveredText()
     }
     p.getChildren().foreach((child : Parse) => getNounPhrases(child))
