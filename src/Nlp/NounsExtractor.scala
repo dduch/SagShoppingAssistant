@@ -3,21 +3,23 @@ package Nlp
 import java.io.FileInputStream
 import opennlp.tools.cmdline.parser.ParserTool
 import opennlp.tools.parser.{Parse, ParserFactory, ParserModel}
+import opennlp.tools.lemmatizer.SimpleLemmatizer
 
 // Class responsible for noun extraction from customer's query (natural language)
 class NounsExtractor(customersQuery : String) {
 
   // List of found nouns
   var nouns  = List[String]()
+  // Initialize English dictionary
+  val english = new FileInputStream("en-parser-chunking.bin")
+  val englishLemmatizer = new FileInputStream("en-lemmatizer.dict")
+  val lemmatizer = new SimpleLemmatizer(englishLemmatizer)
+  val model = new ParserModel(english)
 
   // Method for extracting nouns from a query
   def extractNouns() : List[String] = {
-    // Initialize English dictionary
-    val english = new FileInputStream("en-parser-chunking.bin")
-
     // Parse a query
     try {
-      val model = new ParserModel(english)
       val parser = ParserFactory.create(model)
       val topParses = ParserTool.parseLine(customersQuery, parser, 1)
       topParses foreach (x => getNouns(x))
@@ -37,10 +39,10 @@ class NounsExtractor(customersQuery : String) {
 
     // Check for a type corresponding to nouns
     if (p.getType == "NN" || p.getType == "NNS" || p.getType == "NNP" || p.getType == "NNPS"){
-      // Append found noun to a list of nouns
-      nouns ::= p.getCoveredText()
+      // Append found noun in a single form to a list of nouns
+      nouns ::= lemmatizer.lemmatize(p.getCoveredText, p.getType)
     }
     // Check the children
-    p.getChildren() foreach ((child: Parse) => getNouns(child))
+    p.getChildren foreach ((child: Parse) => getNouns(child))
   }
 }

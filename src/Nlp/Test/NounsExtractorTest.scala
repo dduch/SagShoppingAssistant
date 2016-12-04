@@ -12,12 +12,10 @@ class NounsExtractorTest extends FunSuite {
     val nouns: List[String] = new NounsExtractor("I want to buy a cap").extractNouns
     assert(nouns(0) == "cap")
     assert(nouns.length == 1)
-
   }
   test("testNouns2"){
     val nouns : List[String] = new NounsExtractor("Please show me some telephones").extractNouns
-    assert(nouns(0)=="telephones")
+    assert(nouns(0)=="telephone")
     assert(nouns.length == 1)
   }
-
 }
