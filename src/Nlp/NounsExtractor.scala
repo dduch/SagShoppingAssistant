@@ -1,25 +1,29 @@
 package Nlp
 
-import java.io.{FileInputStream, InputStream}
-
+import java.io.FileInputStream
 import opennlp.tools.cmdline.parser.ParserTool
-import opennlp.tools.parser.{Parse, Parser, ParserFactory, ParserModel}
+import opennlp.tools.parser.{Parse, ParserFactory, ParserModel}
 
-/**
-  * Created by Dawid Dominiak on 2016-11-05.
-  */
-class NounsExtractor(sentence : String) {
-  var nounPhrases  = List[String]()
+// Class responsible for noun extraction from customer's query (natural language)
+class NounsExtractor(customersQuery : String) {
 
-  def extractNouns(): List[String] ={
+  // List of found nouns
+  var nouns  = List[String]()
 
-    val stream : InputStream = new FileInputStream("en-parser-chunking.bin")
-    try{
-      val model : ParserModel  = new ParserModel(stream)
-      val parser : Parser  = ParserFactory.create(model)
-      val topParses : Array[Parse] = ParserTool.parseLine(sentence, parser, 1)
-      topParses.foreach(x => getNounPhrases(x))
-      return nounPhrases
+  // Method for extracting nouns from a query
+  def extractNouns(): List[String] = {
+    // Initialize English dictionary
+    val english = new FileInputStream("en-parser-chunking.bin")
+
+    // Parse a query
+    try {
+      val model = new ParserModel(english)
+      val parser = ParserFactory.create(model)
+      val topParses = ParserTool.parseLine(customersQuery, parser, 1)
+      topParses foreach (x => getNouns(x))
+
+      // Return nouns
+      nouns
     }
     catch {
       case e: Exception => e.printStackTrace
@@ -27,10 +31,16 @@ class NounsExtractor(sentence : String) {
     }
   }
 
-  def getNounPhrases(p : Parse ) {
-    if (p.getType().equals("NP")){
-      nounPhrases ::= p.getCoveredText()
+  // Get nouns for a parser
+  def getNouns(p : Parse ) {
+    //println(p.getType+" "+p.getCoveredText)
+
+    // Check for a type corresponding to nouns
+    if (p.getType == "NN" || p.getType == "NNS" || p.getType == "NNP" || p.getType == "NNPS"){
+      // Append found noun to a list of nouns
+      nouns ::= p.getCoveredText()
     }
-    p.getChildren().foreach((child : Parse) => getNounPhrases(child))
+    // Check the children
+    p.getChildren() foreach ((child: Parse) => getNouns(child))
   }
 }
