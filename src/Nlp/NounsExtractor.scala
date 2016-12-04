@@ -11,7 +11,7 @@ class NounsExtractor(customersQuery : String) {
   var nouns  = List[String]()
 
   // Method for extracting nouns from a query
-  def extractNouns(): List[String] = {
+  def extractNouns() : List[String] = {
     // Initialize English dictionary
     val english = new FileInputStream("en-parser-chunking.bin")
 

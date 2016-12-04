@@ -1,6 +1,7 @@
 import Core.WebDownloader
 import akka.actor.{ActorSystem, Props}
 import Nlp.NounsExtractor
+import Core.OnlineShops
 
 // Starting point for application
 object StartingPoint{
@@ -14,7 +15,8 @@ object StartingPoint{
 
     // Try to connect to shop's webpage
     try {
-      val content = new WebDownloader().get("https://www.amazon.com/")
+      val content = new WebDownloader().get(OnlineShops.BONANZA_SEARCH_URL + nouns.head)
+      java.awt.Desktop.getDesktop().browse(java.net.URI.create(OnlineShops.BONANZA_BASE_URL + content))
       System.out.println(content)
     } catch {
       case e: Exception => e.printStackTrace
