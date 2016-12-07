@@ -7,30 +7,42 @@ import Core.Web.BonanzaParser
 /**
   * Created by mbryk on 05.12.2016.
   */
+
+// Actor responsible for coordiantion of webpage crawlers and communication with main actor
 class CrawlersCoordinatorActor extends Actor {
 
-  private var expectedResults = 0
-  private var userActor: ActorRef = null // This currently constraints number of user agents to 1
+  // Parent actor
+  private var userActor: ActorRef = null // this currently constraints number of user agents to 1
+
+  // Result of crawler's activity that is passed to parent actor
   private var results: List[(String,Int)] = List()
 
+  // Site crawlers (actors)
+  // TODO add crawers for 4 more online shops
   val siteCrawlers = List(context.actorOf(Props(new SiteCrawlerActor(new BonanzaParser()))))
 
+  // Find 4 best results for each online shop
   val resultsPerSite = 4
-  val maxResults = resultsPerSite * siteCrawlers.length
+  // In the end show 3 best results
   val finalResultsNumber = 3
 
   def receive = {
+
+    // Receive parsed query, then pass it to each site crawler
     case ParsedQuery(query) =>
-      expectedResults = maxResults
       userActor = sender()
       siteCrawlers.foreach(it => {
         val (crawler) = it
-        crawler ! CrawlSite(query, "", resultsPerSite)
+        crawler ! CrawlSite(query, resultsPerSite)
       })
 
+    // Received when a crawler finishes its job
     case PageAnalysisComplete(pageUrl, accuracy) =>
+      // Append new result (url and its accuracy score)
       results = (pageUrl, accuracy) :: results
 
+      // Send best results to parent actor
+      // TODO allow results.length > 1
       if (results.length == 1) {
         userActor ! QueryResults(
           results.sortWith((l,r) => {
@@ -44,5 +56,4 @@ class CrawlersCoordinatorActor extends Actor {
         )
       }
   }
-
 }

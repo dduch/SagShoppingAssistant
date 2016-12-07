@@ -10,20 +10,24 @@ import Core.Web.WebParser
   */
 class SiteCrawlerActor(parser : WebParser) extends Actor {
 
+  // Number of page analyze actors
   val numberOfWorkers = 3
 
+  // Router for page analyze actors
   val workerRouter = context.actorOf(
     Props[PageAnalyzerActor].withRouter(RoundRobinPool(numberOfWorkers))
   )
 
   def receive = {
-    case CrawlSite(siteSearchUrl, query, expectedResultsNumber) => {
-      println("Crawling query: " + query + " on page: " + siteSearchUrl)
-      // ... get search result page , extract links
-      val links = parser.parseResultsSite(siteSearchUrl)
+    case CrawlSite(query, expectedResultsNumber) => {
+
+      // Parse the shop's webpage, extract links with matching query
+      val links = parser.parseResultsSite(query)
+
+      // Let the page analyzer actor analyze the product's webpage
       links.foreach(link => {
-        // ... add some delay to not ddos the site
-        workerRouter forward AnalyzePage(link, "", query)
+        // TODO Add some delay not to DDoS the site
+        workerRouter forward AnalyzePage(link, query)
       })
     }
   }
