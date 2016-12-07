@@ -2,6 +2,7 @@ package Core.Actors
 
 import akka.actor._
 import Core.Messages._
+import Core.Web.BonanzaParser
 
 /**
   * Created by mbryk on 05.12.2016.
@@ -12,13 +13,10 @@ class CrawlersCoordinatorActor extends Actor {
   private var userActor: ActorRef = null // This currently constraints number of user agents to 1
   private var results: List[(String,Int)] = List()
 
-  val sites = List("amazon", "ebay")
-  val siteCrawlers = sites.map(site => {
-    (site, context.actorOf(Props[SiteCrawlerActor]))
-  })
+  val siteCrawlers = List(context.actorOf(Props(new SiteCrawlerActor(new BonanzaParser()))))
 
   val resultsPerSite = 4
-  val maxResults = resultsPerSite * sites.length
+  val maxResults = resultsPerSite * siteCrawlers.length
   val finalResultsNumber = 3
 
   def receive = {
@@ -26,14 +24,14 @@ class CrawlersCoordinatorActor extends Actor {
       expectedResults = maxResults
       userActor = sender()
       siteCrawlers.foreach(it => {
-        val (site, crawler) = it
-        crawler ! CrawlSite(site, query, resultsPerSite)
+        val (crawler) = it
+        crawler ! CrawlSite(query, "", resultsPerSite)
       })
 
     case PageAnalysisComplete(pageUrl, accuracy) =>
       results = (pageUrl, accuracy) :: results
 
-      if (results.length == maxResults) {
+      if (results.length == 1) {
         userActor ! QueryResults(
           results.sortWith((l,r) => {
             val (_,lAccuracy) = l

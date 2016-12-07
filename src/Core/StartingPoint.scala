@@ -1,9 +1,8 @@
-import Core.WebDownloader
 import akka.actor.{ActorSystem, Props}
 import Nlp.NounsExtractor
-import Core.OnlineShops
-import Core.Actors.{UserAgentActor, CrawlersCoordinatorActor}
+import Core.Actors.{CrawlersCoordinatorActor, UserAgentActor}
 import Core.Messages._
+import Core.Web.{OnlineShops, WebDownloader}
 
 // Starting point for application
 object StartingPoint{
@@ -21,8 +20,8 @@ object StartingPoint{
     val nouns : List[String] = new NounsExtractor(input).extractNouns
     nouns.foreach(x => System.out.println(x))
 
-    if (input == "akka-demo") {
-      userAgentActor ! RawQuery("productX")
+    if (true) {
+      userAgentActor ! RawQuery(nouns(0))
     }
     else {
       // Try to connect to shop's webpage

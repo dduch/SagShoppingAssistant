@@ -2,6 +2,7 @@ package Core.Actors
 
 import akka.actor._
 import Core.Messages._
+import Core.Web.OnlineShops
 
 /**
   * Created by mbryk on 05.12.2016.
@@ -22,6 +23,7 @@ class UserAgentActor(crawlerAddress: String) extends Actor {
 
     case QueryResults(results) =>
       // ... show results
-      results.foreach(x => println("Found link: " + x))
+      results.foreach(x => java.awt.Desktop.getDesktop().browse(java.net.URI.create(x)))
+
   }
 }
