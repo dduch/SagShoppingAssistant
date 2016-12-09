@@ -26,7 +26,6 @@ class SiteCrawlerActor(parser : WebParser) extends Actor {
 
       // Let the page analyzer actor analyze the product's webpage
       links.foreach(link => {
-        // TODO Add some delay not to DDoS the site
         workerRouter forward AnalyzePage(link, query)
       })
     }

@@ -8,13 +8,13 @@ import opennlp.tools.tokenize.{TokenizerME, TokenizerModel}
 /**
   * Created by Vitalik on 2016-12-07.
   */
+
+// Class resposible for analyzing the relevence of found webpage
 class PageAnalyzer {
   def isPageRelevant(pageUrl: String, query: String): Int = {
 
-    // Create tokenizer model
-    val english = new FileInputStream("en-token.bin")
-    val model = new TokenizerModel(english)
-    val tokenizer = new TokenizerME(model)
+    // Initialuze tokenizer
+    val tokenizer = new TokenizerME(PageAnalyzer.model)
 
     // Get webpage and tokenize it
     val doc = new WebDownloader().get(pageUrl)
@@ -33,3 +33,10 @@ class PageAnalyzer {
     score
   }
 }
+
+object PageAnalyzer{
+  // Create tokenizer model
+  val english = new FileInputStream("en-token.bin")
+  val model = new TokenizerModel(english)
+}
+

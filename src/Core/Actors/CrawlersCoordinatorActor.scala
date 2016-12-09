@@ -42,7 +42,7 @@ class CrawlersCoordinatorActor extends Actor {
       results = (pageUrl, accuracy) :: results
 
       // Send best results to parent actor
-      //TODO 10 is temporary number here
+      //TODO 10 is temporary number here, should be tuned later
       if (results.length == 10) {
         userActor ! QueryResults(
           results.sortWith((l,r) => {
