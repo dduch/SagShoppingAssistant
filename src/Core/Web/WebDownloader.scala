@@ -15,6 +15,6 @@ class WebDownloader {
   {
     val browser = new Browser()
     val doc : Element = browser.get(url)
-    return doc
+    doc
   }
 }

@@ -13,21 +13,20 @@ class UserAgentActor(crawlerAddress: String) extends Actor {
 
   // Parse raw user input into product's name
   def parseQuery(query: String): String = {
-    val nouns: List[String] = new NounsExtractor(query).extractNouns
-    //TODO what if more than one noun is in the query?
-    val parsedQuery = nouns(0)
+    val nouns: List[String] = new NounsExtractor(query).extractNouns()
+    val parsedQuery = nouns.head
     parsedQuery
   }
 
   def receive = {
-    // Receive raw query and send a parsed query to crawlers cordinator actor
+    // Receive raw query and send a parsed query to crawlers coordinator actor
     case RawQuery(query) =>
       val parsedQuery = parseQuery(query)
       context.actorSelection(crawlerAddress) ! ParsedQuery(parsedQuery)
 
     // Show results in a new browser's tabs
     case QueryResults(results) =>
-      results.foreach(x => java.awt.Desktop.getDesktop().browse(java.net.URI.create(x)))
+      results.foreach(x => java.awt.Desktop.getDesktop.browse(java.net.URI.create(x)))
 
   }
 }

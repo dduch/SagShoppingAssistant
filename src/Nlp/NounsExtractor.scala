@@ -23,7 +23,7 @@ class NounsExtractor(customersQuery : String) {
       nouns
     }
     catch {
-      case e: Exception => e.printStackTrace
+      case e: Exception => e.printStackTrace()
         null
     }
   }

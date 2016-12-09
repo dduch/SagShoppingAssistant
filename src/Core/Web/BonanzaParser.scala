@@ -16,9 +16,8 @@ class BonanzaParser extends WebParser {
 
     var productsLinks  = List[String]()
 
-    // Get no more than a hundred first links to products
-    val maxLinkNumber = 100
-    for(i <- 0 until maxLinkNumber) {
+    // Get no more than a maxLinkNumber first links to products
+    for(i <- 0 until WebParser.maxLinkNumber) {
       // Catch error when there are fewer links
       try {
         productsLinks ::= OnlineShops.BONANZA_BASE_URL + items.get(i).select("a").attr("href")
@@ -26,6 +25,6 @@ class BonanzaParser extends WebParser {
         case e: java.lang.IndexOutOfBoundsException => Unit
       }
     }
-    return productsLinks
+    productsLinks
   }
 }

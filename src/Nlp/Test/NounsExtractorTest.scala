@@ -9,13 +9,13 @@ import org.scalatest.FunSuite
 class NounsExtractorTest extends FunSuite {
 
   test("testNouns1") {
-    val nouns: List[String] = new NounsExtractor("I want to buy a cap").extractNouns
-    assert(nouns(0) == "cap")
+    val nouns: List[String] = new NounsExtractor("I want to buy a cap").extractNouns()
+    assert(nouns.head == "cap")
     assert(nouns.length == 1)
   }
   test("testNouns2"){
-    val nouns : List[String] = new NounsExtractor("Please show me some telephones").extractNouns
-    assert(nouns(0)=="telephone")
+    val nouns : List[String] = new NounsExtractor("Please show me some telephones").extractNouns()
+    assert(nouns.head=="telephone")
     assert(nouns.length == 1)
   }
 }
