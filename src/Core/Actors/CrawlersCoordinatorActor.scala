@@ -21,10 +21,10 @@ class CrawlersCoordinatorActor extends Actor {
   // TODO add crawers for 4 more online shops
   val siteCrawlers = List(context.actorOf(Props(new SiteCrawlerActor(new BonanzaParser()))))
 
-  // Find 4 best results for each online shop
-  val resultsPerSite = 4
-  // In the end show 3 best results
-  val finalResultsNumber = 3
+  // Find 5 best results for each online shop
+  val resultsPerSite = 5
+  // In the end show 5 best results
+  val finalResultsNumber = 5
 
   def receive = {
 
@@ -42,8 +42,8 @@ class CrawlersCoordinatorActor extends Actor {
       results = (pageUrl, accuracy) :: results
 
       // Send best results to parent actor
-      // TODO allow results.length > 1
-      if (results.length == 1) {
+      //TODO 10 is temporary number here
+      if (results.length == 10) {
         userActor ! QueryResults(
           results.sortWith((l,r) => {
             val (_,lAccuracy) = l

@@ -25,8 +25,8 @@ class UserAgentActor(crawlerAddress: String) extends Actor {
       val parsedQuery = parseQuery(query)
       context.actorSelection(crawlerAddress) ! ParsedQuery(parsedQuery)
 
+    // Show results in a new browser's tabs
     case QueryResults(results) =>
-      // Show results in a new browser's tabs
       results.foreach(x => java.awt.Desktop.getDesktop().browse(java.net.URI.create(x)))
 
   }

@@ -25,7 +25,6 @@ class BonanzaParser extends WebParser {
       } catch {
         case e: java.lang.IndexOutOfBoundsException => Unit
       }
-
     }
     return productsLinks
   }
