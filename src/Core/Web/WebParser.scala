@@ -10,6 +10,5 @@ trait WebParser {
 }
 object WebParser {
   // Maximal number of links per one online shop
-  val maxLinkNumber = 30
-
+  val maxLinkNumber = 20
 }

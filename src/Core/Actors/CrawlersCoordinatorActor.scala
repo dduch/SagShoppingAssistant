@@ -2,7 +2,7 @@ package Core.Actors
 
 import akka.actor._
 import Core.Messages._
-import Core.Web.BonanzaParser
+import Core.Web._
 
 /**
   * Created by mbryk on 05.12.2016.
@@ -18,8 +18,11 @@ class CrawlersCoordinatorActor extends Actor {
   private var results: List[(String,Int)] = List()
 
   // Site crawlers (actors)
-  // TODO add crawlers for 4 more online shops
-  val siteCrawlers = List(context.actorOf(Props(new SiteCrawlerActor(new BonanzaParser()))))
+  var siteCrawlers = List(context.actorOf(Props(new SiteCrawlerActor(new AmazonParser()))))
+  siteCrawlers ::= (context.actorOf(Props(new SiteCrawlerActor(new AliexpressParser()))))
+  siteCrawlers ::= (context.actorOf(Props(new SiteCrawlerActor(new BonanzaParser()))))
+  siteCrawlers ::= (context.actorOf(Props(new SiteCrawlerActor(new EbayParser()))))
+  siteCrawlers ::= (context.actorOf(Props(new SiteCrawlerActor(new OverstockParser()))))
 
   // Find 5 best results for each online shop
   val resultsPerSite = 5
