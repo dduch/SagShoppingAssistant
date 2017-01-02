@@ -6,7 +6,7 @@ package Core.Messages
 sealed trait CrawlerMessage
 case class CrawlSite(query: String, expectedResultsNumber: Int) extends CrawlerMessage
 case class AnalyzePage(pageUrl: String, query: String) extends CrawlerMessage
-case class PageAnalysisComplete(url: String, accuracy: Int) extends CrawlerMessage
+case class PageAnalysisComplete(url: String, accuracy: Double) extends CrawlerMessage
 
 sealed trait UserMessage
 case class RawQuery(query: String) extends UserMessage

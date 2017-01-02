@@ -15,7 +15,7 @@ class CrawlersCoordinatorActor extends Actor {
   private var userActor: ActorRef = _ // this currently constraints number of user agents to 1
 
   // Result of crawler's activity that is passed to parent actor
-  private var results: List[(String,Int)] = List()
+  private var results: List[(String, Double)] = List()
 
   // Site crawlers (actors)
   var siteCrawlers = List(context.actorOf(Props(new SiteCrawlerActor(new AmazonParser()))))
@@ -25,7 +25,7 @@ class CrawlersCoordinatorActor extends Actor {
   siteCrawlers ::= (context.actorOf(Props(new SiteCrawlerActor(new OverstockParser()))))
 
   // Find 5 best results for each online shop
-  val resultsPerSite = 5
+  val resultsPerSite = 6
   // In the end show 5 best results
   val finalResultsNumber = 5
 
@@ -45,8 +45,7 @@ class CrawlersCoordinatorActor extends Actor {
       results = (pageUrl, accuracy) :: results
 
       // Send best results to parent actor
-      //TODO 10 is temporary number here, should be tuned later
-      if (results.length == 10) {
+      if (results.length == 12) {
         userActor ! QueryResults(
           results.sortWith((l,r) => {
             val (_,lAccuracy) = l
