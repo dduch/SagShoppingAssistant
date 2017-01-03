@@ -25,7 +25,7 @@ class SiteCrawlerActor(parser : WebParser) extends Actor {
       val links = parser.parseResultsSite(query)
 
       // Let the page analyzer actor analyze the product's webpage
-      (links.slice(0,expectedResultsNumber-1)).foreach(link => {
+      (links.slice(0,expectedResultsNumber)).foreach(link => {
         workerRouter forward AnalyzePage(link, query)
       })
     }

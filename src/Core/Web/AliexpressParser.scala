@@ -10,7 +10,7 @@ class AliexpressParser extends WebParser {
 
     val doc = new WebDownloader().get(OnlineShops.ALIEXPRESS_SEARCH_URL + phrase)
     val searchResults = doc.getElementById("hs-list-items")
-    var items = searchResults.getElementsByClass("item")
+    val items = searchResults.getElementsByClass("item")
     var productsLinks  = List[String]()
 
     // Get no more than a maxLinkNumber first links to products

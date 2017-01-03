@@ -1,11 +1,17 @@
 import akka.actor.{ActorSystem, Props}
 import Core.Actors.{CrawlersCoordinatorActor, UserAgentActor}
 import Core.Messages._
+import Nlp.NounsExtractor
+import Nlp.PageAnalyzer
 
 // Starting point for application
 object StartingPoint{
 
   def main(args: Array[String]) = {
+
+    // Init static objects
+    NounsExtractor
+    PageAnalyzer
 
     //Create actor system
     val actorSystem = ActorSystem()

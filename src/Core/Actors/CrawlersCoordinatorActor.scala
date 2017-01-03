@@ -25,7 +25,7 @@ class CrawlersCoordinatorActor extends Actor {
   siteCrawlers ::= (context.actorOf(Props(new SiteCrawlerActor(new OverstockParser()))))
 
   // Find 5 best results for each online shop
-  val resultsPerSite = 6
+  val resultsPerSite = 5
   // In the end show 5 best results
   val finalResultsNumber = 5
 
@@ -41,11 +41,12 @@ class CrawlersCoordinatorActor extends Actor {
 
     // Received when a crawler finishes its job
     case PageAnalysisComplete(pageUrl, accuracy) =>
+
       // Append new result (url and its accuracy score)
       results = (pageUrl, accuracy) :: results
 
       // Send best results to parent actor
-      if (results.length == 12) {
+      if (results.length == 15) {
         userActor ! QueryResults(
           results.sortWith((l,r) => {
             val (_,lAccuracy) = l
