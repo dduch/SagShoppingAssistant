@@ -25,7 +25,7 @@ object StartingPoint{
       val userAgentActor = actorSystem.actorOf(Props(new UserAgentActor("/user/" + crawlerCoordinatorActorName)))
 
       // Extract nouns from customer's input
-      val input = scala.io.StdIn.readLine(if (loop==0) promts(0) else promts(1))
+      val input = scala.io.StdIn.readLine(if (loop==1) promts(0) else promts(1))
 
       // Start actor's role
       userAgentActor ! RawQuery(input)
