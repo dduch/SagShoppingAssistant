@@ -11,7 +11,7 @@ import opennlp.tools.tokenize.{TokenizerME, TokenizerModel}
 
 // Class responsible for analyzing the relevence of found webpage
 class PageAnalyzer {
-  def isPageRelevant(pageUrl: String, query: String): Double = {
+  def isPageRelevant(pageUrl: String, query: List[String]): Double = {
     // Init tokenizer
     val tokenizer = new TokenizerME(PageAnalyzer.model)
 
@@ -23,8 +23,9 @@ class PageAnalyzer {
     // Count the number of occurrences of query at the webpage
     var score : Int = 0
     for(token <- tokens){
-      if(token.equalsIgnoreCase(query)){
-        score += 1
+      for(word <- query)
+        if(token.equalsIgnoreCase(word)){
+          score += 1
       }
     }
     // Return the frequency of occurrences as a page relevancy score

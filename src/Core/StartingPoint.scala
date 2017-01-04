@@ -6,7 +6,7 @@ import Nlp.PageAnalyzer
 
 // Starting point for application
 object StartingPoint{
-
+  val promts : List[String] = List("What do you want to buy, Sir?\n", "Do you want to buy something more, Sir?\n")
   def main(args: Array[String]) = {
 
     // Init static objects
@@ -16,15 +16,19 @@ object StartingPoint{
     //Create actor system
     val actorSystem = ActorSystem()
 
-    //Create main actor (userAgentActor) and crawler actor
-    val crawlerCoordinatorActorName = "crawler-coordinator"
-    val crawlerCoordinatorActor = actorSystem.actorOf(Props[CrawlersCoordinatorActor], name = crawlerCoordinatorActorName)
-    val userAgentActor = actorSystem.actorOf(Props(new UserAgentActor("/user/" + crawlerCoordinatorActorName)))
+    var loop = 0
+    while(true) {
+      loop = loop + 1
+      //Create main actor (userAgentActor) and crawler actor
+      val crawlerCoordinatorActorName = "crawler-coordinator"+loop.toString
+      val crawlerCoordinatorActor = actorSystem.actorOf(Props[CrawlersCoordinatorActor], name = crawlerCoordinatorActorName)
+      val userAgentActor = actorSystem.actorOf(Props(new UserAgentActor("/user/" + crawlerCoordinatorActorName)))
 
-    // Extract nouns from customer's input
-    val input = scala.io.StdIn.readLine("What do you want to buy, Sir?\n")
+      // Extract nouns from customer's input
+      val input = scala.io.StdIn.readLine(if (loop==0) promts(0) else promts(1))
 
-    // Start actor's role
-    userAgentActor ! RawQuery(input)
+      // Start actor's role
+      userAgentActor ! RawQuery(input)
+    }
   }
 }

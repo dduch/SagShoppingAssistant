@@ -12,9 +12,11 @@ import Nlp.NounsExtractor
 class UserAgentActor(crawlerAddress: String) extends Actor {
 
   // Parse raw user input into product's name
-  def parseQuery(query: String): String = {
-    val nouns: List[String] = new NounsExtractor(query).extractNouns()
-    val parsedQuery = nouns.head
+  def parseQuery(query: String): List[String] = {
+    val ne = new NounsExtractor(query)
+    val nouns: List[String] = ne.extractNouns()
+    val adjectives: List[String] = ne.extractAdjectives()
+    val parsedQuery: List[String] = nouns.head :: adjectives
     parsedQuery
   }
 

@@ -20,9 +20,9 @@ class SiteCrawlerActor(parser : WebParser) extends Actor {
 
   def receive = {
     case CrawlSite(query, expectedResultsNumber) => {
-
+      val searchQuery = query mkString " "
       // Parse the shop's webpage, extract links with matching query
-      val links = parser.parseResultsSite(query)
+      val links = parser.parseResultsSite(searchQuery)
 
       // Let the page analyzer actor analyze the product's webpage
       (links.slice(0,expectedResultsNumber)).foreach(link => {
