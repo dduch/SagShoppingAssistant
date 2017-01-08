@@ -24,11 +24,12 @@ class UserAgentActor(crawlerAddress: String) extends Actor {
     // Receive raw query and send a parsed query to crawlers coordinator actor
     case RawQuery(query) =>
       val parsedQuery = parseQuery(query)
+      println("Parsed user phrase: '" + parsedQuery + "'")
+
       context.actorSelection(crawlerAddress) ! ParsedQuery(parsedQuery)
 
     // Show results in a new browser's tabs
     case QueryResults(results) =>
       results.foreach(x => java.awt.Desktop.getDesktop.browse(java.net.URI.create(x)))
-
   }
 }
